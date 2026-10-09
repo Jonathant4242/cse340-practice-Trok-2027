@@ -9,45 +9,6 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Course catalog data
-const courses = {
-    cse340: {
-        name: 'Web Backend Development II',
-        department: 'CSE',
-        number: '340',
-        description: 'Learn backend web development using Node.js and Express.',
-        sections: [
-            {
-                professor: 'Brother Jones',
-                room: 'STC 385',
-                time: '9:00 AM'
-            },
-            {
-                professor: 'Sister Smith',
-                room: 'STC 391',
-                time: '11:00 AM'
-            }
-        ]
-    },
-    cse341: {
-        name: 'Web Services',
-        department: 'CSE',
-        number: '341',
-        description: 'Learn how to build and consume web services and APIs.',
-        sections: [
-            {
-                professor: 'Brother Brown',
-                room: 'STC 385',
-                time: '1:00 PM'
-            },
-            {
-                professor: 'Sister Davis',
-                room: 'STC 391',
-                time: '3:00 PM'
-            }
-        ]
-    }
-};
 
 // Create the server
 const app = express();
@@ -91,8 +52,58 @@ app.get('/student', (req, res) => {
     res.render('student', { title: 'Student Information', student });
 });
 
+
+// Test route for 500 errors
+app.get('/test-error', (req, res, next) => {
+    const err = new Error('This is a test error');
+    err.status = 500;
+    next(err);
+});
+
+// Catch-all route for 404 errors
+app.use((req, res, next) => {
+    const err = new Error('Page Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+    // Prevent infinite loops, if a response has already been sent, do nothing
+    if (res.headersSent || res.finished) {
+        return next(err);
+    }
+    
+    // Determine status and template
+    const status = err.status || 500;
+    const template = status === 404 ? '404' : '500';
+
+    // Prepare data for the template
+    const context = {
+        title: status === 404 ? 'Page Not Found' : 'Server Error',
+        error: NODE_ENV === 'production' ? 'An error occurred' : err.message,
+        stack: NODE_ENV === 'production' ? null : err.stack,
+        NODE_ENV
+    };
+
+    // Render the appropriate error template with fallback
+    try {
+        res.status(status).render(`errors/${template}`, context);
+    } catch (renderErr) {
+        // If rendering fails, send a simple error page instead
+        if (!res.headersSent) {
+            res.status(status).send(
+                `<h1>Error ${status}</h1><p>An error occurred.</p>`
+            );
+        }
+    }
+});
+
+
+
 // Nodemon restarts close these connections, prompting browsers to reload.
 let wsServer;
+
 if (NODE_ENV.includes('dev')) {
     try {
         const { WebSocketServer } = await import('ws');
