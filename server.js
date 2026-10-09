@@ -9,6 +9,46 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Course catalog data
+const courses = {
+    cse340: {
+        name: 'Web Backend Development II',
+        department: 'CSE',
+        number: '340',
+        description: 'Learn backend web development using Node.js and Express.',
+        sections: [
+            {
+                professor: 'Brother Jones',
+                room: 'STC 385',
+                time: '9:00 AM'
+            },
+            {
+                professor: 'Sister Smith',
+                room: 'STC 391',
+                time: '11:00 AM'
+            }
+        ]
+    },
+    cse341: {
+        name: 'Web Services',
+        department: 'CSE',
+        number: '341',
+        description: 'Learn how to build and consume web services and APIs.',
+        sections: [
+            {
+                professor: 'Brother Brown',
+                room: 'STC 385',
+                time: '1:00 PM'
+            },
+            {
+                professor: 'Sister Davis',
+                room: 'STC 391',
+                time: '3:00 PM'
+            }
+        ]
+    }
+};
+
 // Create the server
 const app = express();
 app.set('env', NODE_ENV);
