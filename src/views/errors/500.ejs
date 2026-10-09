@@ -1,0 +1,21 @@
+<%- include('../partials/header') %>
+
+<main>
+  <h1>500 - Server Error</h1>
+  <p>Sorry, something went wrong on the server.</p>
+
+  <% if (NODE_ENV !== 'production' && typeof error !== 'undefined') { %>
+    <section>
+      <h2>Development Error Details</h2>
+      <p><strong><%= error %></strong></p>
+
+      <% if (typeof stack !== 'undefined' && stack) { %>
+        <pre><%= stack %></pre>
+      <% } %>
+    </section>
+  <% } %>
+
+  <p><a href="/">Return to Home</a></p>
+</main>
+
+<%- include('../partials/footer') %>
