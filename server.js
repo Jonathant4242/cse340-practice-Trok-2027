@@ -49,6 +49,7 @@ const courses = {
     }
 };
 
+
 // Create the server
 const app = express();
 app.set('env', NODE_ENV);
@@ -111,7 +112,6 @@ app.use((err, req, res, next) => {
     if (res.headersSent || res.finished) {
         return next(err);
     }
-
     // Determine status and template
     const status = err.status || 500;
     const template = status === 404 ? '404' : '500';
@@ -139,6 +139,7 @@ app.use((err, req, res, next) => {
 
 // Nodemon restarts close these connections, prompting browsers to reload.
 let wsServer;
+
 if (NODE_ENV.includes('dev')) {
     try {
         const { WebSocketServer } = await import('ws');
