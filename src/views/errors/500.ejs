@@ -1,15 +1,20 @@
 <%- include('../partials/header') %>
-<main>
-    <h1>Something Went Wrong</h1>
-    <p>We are experiencing technical difficulties. Our team has been notified and is working to fix the issue.</p>
-    <p><a href="/">Return to homepage</a></p>
 
-    <% if (NODE_ENV === 'development') { %>
-        <details open>
-            <summary>Error Details (Development Only)</summary>
-            <pre><%= error %></pre>
-            <pre><%= stack %></pre>
-        </details>
-    <% } %>
+<main>
+  <h1>500 - Server Error</h1>
+  <p>Sorry, something went wrong on the server.</p>
+
+  <% if (NODE_ENV !== 'production' && typeof error !== 'undefined') { %>
+    <section>
+      <h2>Development Error Details</h2>
+      <p><strong><%= error %></strong></p>
+
+      <% if (typeof stack !== 'undefined' && stack) { %>
+        <pre><%= stack %></pre>
+      <% } %>
+    </section>
+  <% } %>
+  <p><a href="/">Return to Home</a></p>
 </main>
+
 <%- include('../partials/footer') %>

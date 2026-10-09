@@ -9,6 +9,46 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Course catalog data
+const courses = {
+    cse340: {
+        name: 'Web Backend Development II',
+        department: 'CSE',
+        number: '340',
+        description: 'Learn backend web development using Node.js and Express.',
+        sections: [
+            {
+                professor: 'Brother Jones',
+                room: 'STC 385',
+                time: '9:00 AM'
+            },
+            {
+                professor: 'Sister Smith',
+                room: 'STC 391',
+                time: '11:00 AM'
+            }
+        ]
+    },
+    cse341: {
+        name: 'Web Services',
+        department: 'CSE',
+        number: '341',
+        description: 'Learn how to build and consume web services and APIs.',
+        sections: [
+            {
+                professor: 'Brother Brown',
+                room: 'STC 385',
+                time: '1:00 PM'
+            },
+            {
+                professor: 'Sister Davis',
+                room: 'STC 391',
+                time: '3:00 PM'
+            }
+        ]
+    }
+};
+
 
 // Create the server
 const app = express();
@@ -52,15 +92,14 @@ app.get('/student', (req, res) => {
     res.render('student', { title: 'Student Information', student });
 });
 
-
-// Test route for 500 errors
+// Route used to intentionally trigger a 500 error for testing
 app.get('/test-error', (req, res, next) => {
     const err = new Error('This is a test error');
     err.status = 500;
     next(err);
 });
 
-// Catch-all route for 404 errors
+// Catch any request that did not match one of the routes above
 app.use((req, res, next) => {
     const err = new Error('Page Not Found');
     err.status = 404;
@@ -73,7 +112,6 @@ app.use((err, req, res, next) => {
     if (res.headersSent || res.finished) {
         return next(err);
     }
-    
     // Determine status and template
     const status = err.status || 500;
     const template = status === 404 ? '404' : '500';
@@ -98,8 +136,6 @@ app.use((err, req, res, next) => {
         }
     }
 });
-
-
 
 // Nodemon restarts close these connections, prompting browsers to reload.
 let wsServer;
