@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/catalog.css">
     <% if (NODE_ENV.includes('dev')) { %>
     <script>
         const host = window.location.hostname;
@@ -19,12 +20,12 @@
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="/products">Products</a></li>
-                <li><a href="/student">Student</a></li>
-            </ul>
-        </nav>
+       <nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/catalog">Course Catalog</a></li>
+        <li><a href="/products">Products</a></li>
+    </ul>
+</nav>
     </header>
