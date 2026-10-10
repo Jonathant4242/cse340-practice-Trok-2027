@@ -1,2 +1,1 @@
-# cse340-practice-Trok-2027
-Practice project for CSE 340
+# CSE 340 Practice Project
