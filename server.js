@@ -1,3 +1,4 @@
+import { setupDatabase, testConnection } from './src/models/setup.js';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -49,16 +50,8 @@ if (NODE_ENV.includes('dev')) {
 }
 
 // Start the server
-app.listen(PORT, (error) => {
-    if (error) {
-        console.error('Failed to start server:', error);
-        process.exitCode = 1;
-        if (wsServer) {
-            for (const client of wsServer.clients) client.terminate();
-            wsServer.close();
-        }
-        return;
-    }
-
+app.listen(PORT, async () => {
+    await setupDatabase();
+    await testConnection();
     console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
