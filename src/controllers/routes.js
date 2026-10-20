@@ -5,6 +5,18 @@ import { addDemoHeaders } from '../middleware/global.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 
 const router = Router();
+// Load catalog styles for the catalog list and course detail pages.
+router.use('/catalog', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
+    next();
+});
+
+// Load faculty styles for the directory and individual profiles.
+router.use('/faculty', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/faculty.css">');
+    next();
+});
+
 // Home page route.
 router.get('/', homePage);
 // About page route.

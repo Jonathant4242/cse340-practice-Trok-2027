@@ -10,7 +10,7 @@ const catalogPage = async (req, res) => {
     // Inspect one course to check the template's property names.
     console.log('First course:', courses[0]);
 
-    res.render('catalog', {
+    res.render('catalog/list', {
         title: 'Course Catalog',
         courses: courses
     });
@@ -42,7 +42,7 @@ console.log('Course:', course);
 // Check the offering properties used in the template's sections loop.
 console.log('First section:', sections[0]);
 
-    res.render('course-detail', {
+    res.render('catalog/detail', {
         title: `${course.courseCode} - ${course.name}`,
         course: course,
         sections: sections,
