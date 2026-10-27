@@ -3,6 +3,7 @@ import { homePage, aboutPage, demoPage, studentPage, testError } from './index.j
 import { catalogPage, courseDetailPage } from './catalog/catalog.js';
 import { addDemoHeaders } from '../middleware/global.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
+import contactRoutes from './forms/contact.js';
 
 const router = Router();
 // Load catalog styles for the catalog list and course detail pages.
@@ -16,6 +17,11 @@ router.use('/faculty', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/faculty.css">');
     next();
 });
+    // Add contact-specific styles to all contact routes
+router.use('/contact', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/contact.css">');
+    next();
+});
 
 // Home page route.
 router.get('/', homePage);
@@ -26,7 +32,6 @@ router.get('/student', studentPage);
 // Demo page route.
 router.get('/demo', addDemoHeaders, demoPage);
 // Display the course catalog.
-
 router.get('/catalog', catalogPage);
 // Display the details for a specific course.
 router.get('/catalog/:slugId', courseDetailPage);
@@ -36,5 +41,7 @@ router.get('/test-error', testError);
 router.get('/faculty', facultyListPage);
 // Display an individual faculty member.
 router.get('/faculty/:facultySlug', facultyDetailPage);
+// Contact form routes.
+router.use('/contact', contactRoutes);
 
 export default router;
