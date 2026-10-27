@@ -22,6 +22,10 @@ app.set('views', path.join(__dirname, 'src/views'));
 // Make files inside public accessible to browsers
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Allow Express to receive and process POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Shared request setup, then routes, then error handling.
 app.use(addLocalVariables);
 app.use(logRequest);
