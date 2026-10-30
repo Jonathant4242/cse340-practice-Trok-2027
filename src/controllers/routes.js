@@ -4,6 +4,7 @@ import { catalogPage, courseDetailPage } from './catalog/catalog.js';
 import { addDemoHeaders } from '../middleware/global.js';
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
 import contactRoutes from './forms/contact.js';
+import registrationRoutes from './forms/registration.js';
 
 const router = Router();
 // Load catalog styles for the catalog list and course detail pages.
@@ -20,6 +21,11 @@ router.use('/faculty', (req, res, next) => {
     // Add contact-specific styles to all contact routes
 router.use('/contact', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/contact.css">');
+    next();
+});
+// Add registration-specific styles to all registration routes
+router.use('/register', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/registration.css">');
     next();
 });
 
@@ -43,5 +49,7 @@ router.get('/faculty', facultyListPage);
 router.get('/faculty/:facultySlug', facultyDetailPage);
 // Contact form routes.
 router.use('/contact', contactRoutes);
+// Registration routes
+router.use('/register', registrationRoutes);
 
 export default router;
