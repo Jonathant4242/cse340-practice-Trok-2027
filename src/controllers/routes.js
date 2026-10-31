@@ -28,6 +28,11 @@ router.use('/register', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/registration.css">');
     next();
 });
+// Add login-specific styles to all login routes
+router.use('/login', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/login.css">');
+    next();
+});
 
 // Home page route.
 router.get('/', homePage);
@@ -51,5 +56,7 @@ router.get('/faculty/:facultySlug', facultyDetailPage);
 router.use('/contact', contactRoutes);
 // Registration routes
 router.use('/register', registrationRoutes);
+
+
 
 export default router;
