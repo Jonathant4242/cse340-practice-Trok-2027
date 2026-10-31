@@ -34,6 +34,13 @@ export const addLocalVariables = (req, res, next) => {
     const hour = now.getHours();
     const themes = ['blue-theme', 'green-theme', 'red-theme'];
 
+
+// Convenience variable for UI state based on session state
+    res.locals.isLoggedIn = false;
+        if (req.session && req.session.user) {
+        res.locals.isLoggedIn = true;
+        }
+
     res.locals.NODE_ENV = req.app.get('env');
     res.locals.currentYear = now.getFullYear();
     res.locals.greeting = hour < 12 ? 'Good morning!' : hour < 18 ? 'Good afternoon!' : 'Good evening!';

@@ -4,15 +4,23 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import routes from './src/controllers/routes.js';
 import { addLocalVariables, logRequest, notFound, errorHandler } from './src/middleware/global.js';
+import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
+import { startSessionCleanup } from './src/utils/session-cleanup.js';
 
 // Configuration and file paths
 const NODE_ENV = (process.env.NODE_ENV || 'production').toLowerCase();
 const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const pgSession = connectPgSimple(session);
 
 // Create the server
 const app = express();
+
+// Middleware and session setup will follow here
+
+// Set the environment for the app
 app.set('env', NODE_ENV);
 
 // Use EJS and find templates in src/views
@@ -32,6 +40,29 @@ app.use(logRequest);
 app.use(routes);
 app.use(notFound);
 app.use(errorHandler);
+
+
+// Start automatic session cleanup
+startSessionCleanup();
+
+// Session setup
+app.use(session({
+    store: new pgSession({
+        conObject: {
+            connectionString: process.env.DB_URL
+        },
+        tableName: 'session',
+        createTableIfMissing: true
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: NODE_ENV.includes('dev') !== true,
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000
+    }
+}));
 
 // Nodemon restarts close these connections, prompting browsers to reload.
 let wsServer;
