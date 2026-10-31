@@ -1,0 +1,40 @@
+<%- include('../../partials/header') %>
+<main>
+    <!-- The controller supplies the page title. -->
+    <h1><%= title %></h1>
+    <p>
+        Enter your email and password to access your account.
+        Do not have an account? <a href="/register">Register here</a>.
+    </p>
+
+    <!-- Send credentials to POST /login for validation and authentication. -->
+    <form method="POST" action="/login" class="login-form">
+
+        <!-- name="email" sends this value as req.body.email.
+             The label's "for" connects to the input's "id". -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email"
+                   required autocomplete="username"
+                   placeholder="Enter your email">
+        </div>
+
+        <!-- Hide typed characters and require at least 8 characters.
+             The server compares the password with the stored bcrypt hash. -->
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   minlength="8" required
+                   autocomplete="current-password"
+                   placeholder="Enter your password">
+        </div>
+
+        <!-- Submit after browser checks pass; the server validates again. -->
+        <button type="submit">Sign In</button>
+
+        <div class="form-footer">
+            <p>New user? <a href="/register">Create an account</a></p>
+        </div>
+    </form>
+</main>
+<%- include('../../partials/footer') %>
