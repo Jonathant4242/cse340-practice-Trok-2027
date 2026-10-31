@@ -23,6 +23,25 @@ const app = express();
 // Set the environment for the app
 app.set('env', NODE_ENV);
 
+// Session setup
+app.use(session({
+    store: new pgSession({
+        conObject: {
+            connectionString: process.env.DB_URL
+        },
+        tableName: 'session',
+        createTableIfMissing: true
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: NODE_ENV.includes('dev') !== true,
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000
+    }
+}));
+
 // Use EJS and find templates in src/views
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
@@ -45,24 +64,6 @@ app.use(errorHandler);
 // Start automatic session cleanup
 startSessionCleanup();
 
-// Session setup
-app.use(session({
-    store: new pgSession({
-        conObject: {
-            connectionString: process.env.DB_URL
-        },
-        tableName: 'session',
-        createTableIfMissing: true
-    }),
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: NODE_ENV.includes('dev') !== true,
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000
-    }
-}));
 
 // Nodemon restarts close these connections, prompting browsers to reload.
 let wsServer;
